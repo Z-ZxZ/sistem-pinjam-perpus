@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/internal/middleware"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/internal/service"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/pkg/response"
