@@ -7,12 +7,27 @@ import { api } from '@/lib/api';
 import { Book, Mail, Lock, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+import { useAuth } from '@/context/AuthContext';
+
 export default function LoginPage() {
   const router = useRouter();
+  const { login: authLogin, isLoggedIn, user, isRestored } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isRestored && isLoggedIn && user) {
+      console.log('[Login] Session detected, redirecting...', user.role);
+      if (user.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
+    }
+  }, [isRestored, isLoggedIn, user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,14 +36,16 @@ export default function LoginPage() {
     
     try {
       const res = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      router.push('/dashboard');
+      const userData = res.data.user;
+      console.log('[Login] API Response User Role:', userData.role);
+      
+      authLogin(res.data.token, userData);
+      // Handled by useEffect
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An unexpected error occurred');
+        setError('Login gagal. Periksa kembali email dan password Anda.');
       }
     } finally {
       setIsLoading(false);

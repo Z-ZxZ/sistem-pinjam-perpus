@@ -27,34 +27,78 @@ interface Borrow {
   status: string;
 }
 
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+
 export default function AdminDashboard() {
+  const router = useRouter();
+  const { isLoggedIn, isAdmin, isLoading: authLoading } = useAuth();
+  
   const [users, setUsers] = useState<User[]>([]);
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [booksCount, setBooksCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      const [usersRes, borrowsRes, booksRes] = await Promise.all([
+        api.get('/admin/users'),
+        api.get('/admin/borrows'),
+        api.get('/books?limit=1'), // Just to get total
+      ]);
+      console.log('[Admin] Fetched users:', usersRes.data.length);
+      setUsers(usersRes.data);
+      setBorrows(borrowsRes.data);
+      setBooksCount(booksRes.data.total);
+    } catch (err: unknown) {
+      console.error('[Admin] Fetch error:', err);
+      if (err instanceof Error) setError(err.message);
+      else setError('Gagal memuat data administrasi.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [usersRes, borrowsRes, booksRes] = await Promise.all([
-          api.get('/admin/users'),
-          api.get('/admin/borrows'),
-          api.get('/books?limit=1'), // Just to get total
-        ]);
-        setUsers(usersRes.data);
-        setBorrows(borrowsRes.data);
-        setBooksCount(booksRes.data.total);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+    if (isRestored) {
+      if (!isLoggedIn) {
+        console.log('[Admin] Not logged in, redirecting...');
+        router.push('/login');
+      } else if (!isAdmin) {
+        console.log('[Admin] Not an admin, redirecting...');
+        router.push('/dashboard');
+      } else {
+        fetchData();
       }
-    };
+    }
+  }, [isLoggedIn, isAdmin, authLoading, isRestored, router]);
 
-    fetchData();
-  }, []);
+  if (!isRestored || (isLoading && isLoggedIn && isAdmin)) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-4 border-[#4338CA] border-t-transparent rounded-full animate-spin" />
+        <p className="text-[#64748B] font-medium animate-pulse">Menyiapkan Dashboard...</p>
+      </div>
+    );
+  }
 
-  if (isLoading) return <div className="min-h-screen bg-[#F8FAFC]" />;
+  if (error) {
+    return (
+      <main className="min-h-screen bg-[#F8FAFC]">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 pt-32 flex flex-col items-center justify-center gap-4">
+           <div className="bg-red-50 text-red-600 p-6 rounded-2xl border border-red-100 max-w-md text-center">
+             <h2 className="text-xl font-bold mb-2">Terjadi Kesalahan</h2>
+             <p>{error}</p>
+             <Button className="mt-4" onClick={fetchData}>Coba Lagi</Button>
+           </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!isLoggedIn || !isAdmin) return null;
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">

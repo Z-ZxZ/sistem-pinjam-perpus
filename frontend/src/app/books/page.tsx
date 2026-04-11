@@ -16,7 +16,10 @@ interface Book {
   stock: number;
 }
 
+import { useAuth } from '@/context/AuthContext';
+
 export default function BookCatalog() {
+  const { isLoggedIn, token } = useAuth();
   const [books, setBooks] = useState<Book[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +37,25 @@ export default function BookCatalog() {
       console.error(err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleBorrow = async (bookId: number) => {
+    if (!isLoggedIn) {
+      alert('Silakan login terlebih dahulu untuk meminjam buku.');
+      return;
+    }
+
+    try {
+      await api.post('/borrow', { book_id: bookId });
+      alert('Berhasil meminjam buku! Silakan cek dashboard Anda.');
+      fetchBooks(search); // Refresh stock
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('Gagal meminjam buku. Silakan coba lagi.');
+      }
     }
   };
 
@@ -103,7 +125,12 @@ export default function BookCatalog() {
                      <span className={`text-[10px] font-bold ${book.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
                       {book.stock > 0 ? `${book.stock} Tersedia` : 'Habis'}
                     </span>
-                    <Button size="sm" className="px-3 h-8 text-[10px]" disabled={book.stock === 0}>
+                    <Button 
+                      size="sm" 
+                      className="px-3 h-8 text-[10px]" 
+                      disabled={book.stock === 0}
+                      onClick={() => handleBorrow(book.id)}
+                    >
                       Pinjam
                     </Button>
                   </div>

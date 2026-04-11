@@ -31,35 +31,58 @@ interface Fine {
   created_at: string;
 }
 
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+
 export default function Dashboard() {
+  const router = useRouter();
+  const { isLoggedIn, isLoading: authLoading, user: authUser } = useAuth();
+  
   const [history, setHistory] = useState<Borrow[]>([]);
   const [fines, setFines] = useState<{ total: number; fines: Fine[] }>({ total: 0, fines: [] });
-  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchData = async () => {
+    try {
+      const [historyRes, finesRes] = await Promise.all([
+        api.get('/history'),
+        api.get('/fines'),
+      ]);
+      setHistory(historyRes.data);
+      setFines(finesRes.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) setUser(JSON.parse(userData));
-
-    const fetchData = async () => {
-      try {
-        const [historyRes, finesRes] = await Promise.all([
-          api.get('/history'),
-          api.get('/fines'),
-        ]);
-        setHistory(historyRes.data);
-        setFines(finesRes.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+    if (isRestored) {
+      if (!isLoggedIn) {
+        router.push('/login');
+      } else {
+        fetchData();
       }
-    };
+    }
+  }, [isLoggedIn, authLoading, isRestored, router]);
 
-    fetchData();
-  }, []);
+  const handleReturn = async (borrowId: number) => {
+    try {
+      await api.put('/borrow/return', { borrow_id: borrowId });
+      alert('Buku berhasil dikembalikan!');
+      fetchData();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('Gagal mengembalikan buku.');
+      }
+    }
+  };
 
-  if (isLoading) return <div className="min-h-screen bg-[#F8FAFC]" />;
+  if (!isRestored || (isLoading && isLoggedIn)) return <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">Loading...</div>;
+  if (!isLoggedIn) return null;
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-20">
@@ -67,7 +90,7 @@ export default function Dashboard() {
       
       <div className="max-w-7xl mx-auto px-4 pt-32">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold text-[#1E293B] mb-2">Halo, {user?.name}</h1>
+          <h1 className="text-3xl font-bold text-[#1E293B] mb-2">Halo, {authUser?.name}</h1>
           <p className="text-[#64748B]">Berikut adalah ringkasan aktivitas perpustakaan Anda.</p>
         </div>
 
@@ -141,6 +164,16 @@ export default function Dashboard() {
                       }`}>
                         {item.status}
                       </span>
+                      {item.status === 'borrowed' && (
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="h-8 px-3 text-[10px]"
+                          onClick={() => handleReturn(item.id)}
+                        >
+                          Kembalikan
+                        </Button>
+                      )}
                       <ChevronRight className="text-[#94A3B8]" />
                     </div>
                   </div>

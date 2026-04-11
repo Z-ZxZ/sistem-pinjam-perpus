@@ -5,10 +5,21 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Book, LogOut, LayoutDashboard } from 'lucide-react';
 
+import { useRouter } from 'next/navigation';
+
+import { useAuth } from '@/context/AuthContext';
+
 export const Navbar = () => {
-  // We'll add real auth logic later
-  const isLoggedIn = false;
-  const isAdmin = false;
+  const router = useRouter();
+  const { isLoggedIn, isAdmin, logout, isRestored } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
+  // Prevent hydration mismatch by not rendering auth-dependent parts until restored
+  const showAuthItems = isRestored && isLoggedIn;
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0] z-50">
@@ -27,20 +38,26 @@ export const Navbar = () => {
             Katalog
           </Link>
           
-          {isLoggedIn ? (
+          {!isRestored ? (
+            <div className="h-8 w-24 bg-slate-100 animate-pulse rounded-lg" />
+          ) : isLoggedIn ? (
             <>
-              <Link href="/dashboard" className="text-[#64748B] hover:text-[#4338CA] transition-colors font-medium">
-                Peminjaman
-              </Link>
               {isAdmin && (
-                <Link href="/admin" className="text-[#64748B] hover:text-[#4338CA] transition-colors font-medium flex items-center gap-1">
+                <Link href="/admin" className="text-[#4338CA] hover:text-[#3730A3] transition-colors font-bold flex items-center gap-1">
                   <LayoutDashboard size={18} />
                   Admin
                 </Link>
               )}
+              <Link href="/dashboard" className="text-[#64748B] hover:text-[#4338CA] transition-colors font-medium">
+                Peminjaman
+              </Link>
               <div className="h-6 w-[1px] bg-[#E2E8F0]" />
-              <button className="text-[#64748B] hover:text-red-600 transition-colors">
-                <LogOut size={20} />
+              <button 
+                onClick={handleLogout}
+                className="text-[#64748B] hover:text-red-600 transition-colors flex items-center gap-1 font-medium"
+              >
+                <LogOut size={18} />
+                Keluar
               </button>
             </>
           ) : (
