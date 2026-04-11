@@ -48,9 +48,9 @@ export default function AdminDashboard() {
         api.get('/books?limit=1'), // Just to get total
       ]);
       console.log('[Admin] Fetched users:', usersRes.data.length);
-      setUsers(usersRes.data);
-      setBorrows(borrowsRes.data);
-      setBooksCount(booksRes.data.total);
+      setUsers(usersRes?.data || []);
+      setBorrows(borrowsRes?.data || []);
+      setBooksCount(booksRes?.data?.total || 0);
     } catch (err: unknown) {
       console.error('[Admin] Fetch error:', err);
       if (err instanceof Error) setError(err.message);
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
           {[
             { label: 'Total Buku', value: booksCount, icon: BookIcon, color: 'bg-[#4338CA]' },
             { label: 'Total Anggota', value: users.length, icon: Users, color: 'bg-[#14B8A6]' },
-            { label: 'Buku Dipinjam', value: borrows.filter(b => b.status === 'borrowed').length, icon: History, color: 'bg-orange-500' },
+            { label: 'Buku Dipinjam', value: (borrows || []).filter(b => b.status === 'borrowed').length, icon: History, color: 'bg-orange-500' },
             { label: 'Tren Bulanan', value: '+12%', icon: TrendingUp, color: 'bg-green-500' },
           ].map((stat, i) => (
             <motion.div 

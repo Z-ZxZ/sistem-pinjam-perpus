@@ -36,7 +36,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function Dashboard() {
   const router = useRouter();
-  const { isLoggedIn, isLoading: authLoading, user: authUser } = useAuth();
+  const { isLoggedIn, isLoading: authLoading, user: authUser, isRestored } = useAuth();
   
   const [history, setHistory] = useState<Borrow[]>([]);
   const [fines, setFines] = useState<{ total: number; fines: Fine[] }>({ total: 0, fines: [] });
@@ -48,8 +48,8 @@ export default function Dashboard() {
         api.get('/history'),
         api.get('/fines'),
       ]);
-      setHistory(historyRes.data);
-      setFines(finesRes.data);
+      setHistory(Array.isArray(historyRes?.data) ? historyRes.data : []);
+      setFines(finesRes?.data || { total: 0, fines: [] });
     } catch (err) {
       console.error(err);
     } finally {
@@ -103,7 +103,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <div className="text-sm text-[#64748B] font-medium">Buku Dipinjam</div>
-                <div className="text-2xl font-bold text-[#1E293B]">{history.filter(h => h.status === 'borrowed').length}</div>
+                <div className="text-2xl font-bold text-[#1E293B]">{(history || []).filter(h => h.status === 'borrowed').length}</div>
               </div>
             </div>
           </motion.div>
@@ -145,7 +145,7 @@ export default function Dashboard() {
               {history.length === 0 ? (
                 <div className="card text-center py-12 text-[#64748B]">Belum ada riwayat peminjaman.</div>
               ) : (
-                history.map((item) => (
+                (history || []).map((item) => (
                   <div key={item.id} className="card bg-white flex items-center justify-between group">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-16 bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] flex items-center justify-center">
@@ -194,7 +194,7 @@ export default function Dashboard() {
                   Hebat! Anda tidak memiliki denda tertunggak.
                 </div>
               ) : (
-                fines.fines.map((fine: Fine) => (
+                (fines?.fines || []).map((fine) => (
                   <div key={fine.id} className="card bg-white border-l-4 border-red-500 py-4">
                     <div className="flex justify-between items-center">
                       <div>
