@@ -32,7 +32,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const { isLoggedIn, isAdmin, isLoading: authLoading } = useAuth();
+  const { isLoggedIn, isAdmin, isLoading: authLoading, isRestored } = useAuth();
   
   const [users, setUsers] = useState<User[]>([]);
   const [borrows, setBorrows] = useState<Borrow[]>([]);
