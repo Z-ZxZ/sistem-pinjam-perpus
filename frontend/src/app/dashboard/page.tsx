@@ -7,10 +7,34 @@ import { api } from '@/lib/api';
 import { Book, Clock, AlertCircle, BookOpen, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface Book {
+  id: number;
+  title: string;
+}
+
+interface Borrow {
+  id: number;
+  book: Book;
+  due_date: string;
+  status: string;
+}
+
+interface Fine {
+  id: number;
+  amount: number;
+  created_at: string;
+}
+
 export default function Dashboard() {
-  const [history, setHistory] = useState<any[]>([]);
-  const [fines, setFines] = useState({ total: 0, fines: [] });
-  const [user, setUser] = useState<any>(null);
+  const [history, setHistory] = useState<Borrow[]>([]);
+  const [fines, setFines] = useState<{ total: number; fines: Fine[] }>({ total: 0, fines: [] });
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -137,7 +161,7 @@ export default function Dashboard() {
                   Hebat! Anda tidak memiliki denda tertunggak.
                 </div>
               ) : (
-                fines.fines.map((fine: any) => (
+                fines.fines.map((fine: Fine) => (
                   <div key={fine.id} className="card bg-white border-l-4 border-red-500 py-4">
                     <div className="flex justify-between items-center">
                       <div>

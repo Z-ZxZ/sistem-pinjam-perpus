@@ -1,13 +1,23 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/Button';
 import { api } from '@/lib/api';
-import { Search, Filter, BookIcon, Info } from 'lucide-react';
+import { Search, Filter, Book as BookIcon } from 'lucide-react';
+
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  category: string;
+  cover_url: string;
+  stock: number;
+}
 
 export default function BookCatalog() {
-  const [books, setBooks] = useState<any[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,7 +81,15 @@ export default function BookCatalog() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <BookIcon size={48} className="text-[#CBD5E1] group-hover:scale-110 transition-transform duration-500" />
                   </div>
-                  {book.cover_url && <img src={book.cover_url} alt={book.title} className="absolute inset-0 w-full h-full object-cover" />}
+                  {book.cover_url && (
+                    <Image 
+                      src={book.cover_url} 
+                      alt={book.title} 
+                      fill 
+                      className="object-cover"
+                      unoptimized // Allow external URLs without config
+                    />
+                  )}
                   <div className="absolute top-2 right-2">
                     <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-[#4338CA] uppercase">
                       {book.category}

@@ -2,17 +2,18 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'accent' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
 }
 
 export const Button = ({ 
   className, 
   variant = 'primary', 
+  size = 'md',
   isLoading, 
   children, 
   ...props 
@@ -24,16 +25,23 @@ export const Button = ({
     ghost: 'text-[#64748B] hover:bg-[#F8FAFC]',
   };
 
+  const sizes = {
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-6 py-2.5',
+    lg: 'px-8 py-4 text-lg',
+  };
+
   return (
     <motion.button
       whileTap={{ scale: 0.98 }}
       className={twMerge(
-        'px-6 py-2.5 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2',
+        'rounded-lg font-medium transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2',
         variants[variant],
+        sizes[size],
         className
       )}
       disabled={isLoading || props.disabled}
-      {...(props as any)}
+      {...(props as React.ComponentPropsWithoutRef<typeof motion.button>)}
     >
       {isLoading ? (
         <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />

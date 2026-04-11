@@ -118,9 +118,13 @@ func (s *borrowService) ReturnBook(borrowID int64) (float64, error) {
 
 	// Restore stock
 	book, err := s.bookRepo.GetByID(borrow.BookID)
-	if err == nil {
-		book.Stock++
-		s.bookRepo.Update(book)
+	if err != nil {
+		return fineAmount, err
+	}
+	book.Stock++
+	err = s.bookRepo.Update(book)
+	if err != nil {
+		return fineAmount, err
 	}
 
 	return fineAmount, nil

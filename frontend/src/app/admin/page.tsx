@@ -4,12 +4,32 @@ import React, { useEffect, useState } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/Button';
 import { api } from '@/lib/api';
-import { User, Users, Book as BookIcon, History, TrendingUp, Plus, Trash2, Edit } from 'lucide-react';
+import { Users, Book as BookIcon, History, TrendingUp, Plus, Trash2, Edit } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface Book {
+  id: number;
+  title: string;
+  total?: number;
+}
+
+interface Borrow {
+  id: number;
+  user: User;
+  book: Book;
+  borrow_date: string;
+  status: string;
+}
+
 export default function AdminDashboard() {
-  const [users, setUsers] = useState<any[]>([]);
-  const [borrows, setBorrows] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [booksCount, setBooksCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 

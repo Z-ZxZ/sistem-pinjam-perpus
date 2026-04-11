@@ -9,15 +9,18 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main ./cmd/server/main.go
+RUN go build -o server ./cmd/server/main.go
+RUN go build -o seeder ./cmd/seeder/main.go
 
 # Run stage
 FROM alpine:3.18
 
 WORKDIR /app
 
-COPY --from=builder /app/main .
+# Copy binaries from builder
+COPY --from=builder /app/server .
+COPY --from=builder /app/seeder .
 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["./server"]

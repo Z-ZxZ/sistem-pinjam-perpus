@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Book, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Book, LogOut, LayoutDashboard } from 'lucide-react';
 
 export const Navbar = () => {
   // We'll add real auth logic later
