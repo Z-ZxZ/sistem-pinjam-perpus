@@ -1,40 +1,47 @@
-# Sistem Pinjam Perpus — Production Ready
+# Sistem Pinjam Perpus — Project Iseng buat Porto (Gabut Semester 2)
 
-Sistem manajemen perpustakaan modern dengan arsitektur terpisah (Frontend Next.js & Backend Golang) yang dibangun berdasarkan blueprint produksi.
+Halo bang! Ini project iseng gua bikin sistem perpustakaan modern. Sengaja dibikin rada over-engineered pake (Frontend Next.js & Backend Golang) biar keliatan jago aja pas ditaruh di CV atau porto wkwk. Padahal jujur aja baru kemaren belajar Golang di Youtube.
 
-## Teknologi Utama
+## Stack Teknologi (Biar Keliatan Keren)
 
-- **Frontend**: Next.js 15 (App Router), Tailwind CSS, Framer Motion, Lucide Icons.
-- **Backend**: Golang (Clean Architecture), standard library `net/http`, JWT Auth, PostgreSQL.
-- **Infrastruktur**: Docker, Redis, Nginx (ready).
+- **Frontend**: Next.js 15 (App Router), Tailwind CSS (karena kelamaan pake Vanilla CSS), Framer Motion, Lucide Icons.
+- **Backend**: Golang (pakai sok-sokan Clean Architecture biar HRD atau recruiter takjub), standard library `net/http`, Auth pake JWT, sama database PostgreSQL.
+- **Infrastruktur**: Docker, Redis, Nginx (biar kerasa kayak anak DevOps dikit wkwk).
 
-## Cara Menjalankan (Production Setup)
+## Cara Ngerun (Kalo Error Googling Aja)
 
-1. **Prasyarat**: Pastikan Docker dan Docker Compose sudah terinstal.
-2. **Setup Environment**: 
-   - Salin file environment (jika ada) atau biarkan default di `docker-compose.yml`.
+1. **Prasyarat**: Udah harus install Docker sama Docker Compose yak. Kalo belum, tonton dlu tutorial di Youtube.
+2. **Setup Environment**:
+   - Kalo mau gampang, langsung pake default ae yang ada di `docker-compose.yml`, ga usah aneh-aneh ntar error mumet.
 3. **Build & Run**:
+   Tinggal ketik ini aja di terminal, sambil seduh kopi nunggu build nya:
+
    ```bash
    docker-compose up --build
    ```
-4. **Seeding Data**:
-   Setelah sistem berjalan, jalankan seeder untuk mengisi data awal (Admin & Buku):
+
+4. **Masukin Data Dummy (Seeding)**:
+   Ini penting nih, masukin dlu data dummy buat pamer ke temen/recruiter biar ga kosong banget websitenya:
+
    ```bash
    docker exec -it perpus_backend go run cmd/seeder/main.go
    ```
+
 5. **Akses**:
-   - Frontend: `http://localhost:3000`
-   - Backend API: `http://localhost:8080`
+   - Frontend nya buka di sini: `http://localhost:3000`
+   - Backend API nya di mari: `http://localhost:8080`
 
-## Akun Demo (Admin)
+## Akun Login Admin
+
 - **Email**: `admin@perpus.com`
-- **Password**: `admin123`
+- **Password**: `admin123` *(jangan diganti ya wey ntar gabisa login pas mau pamer)*
 
-## Fitur Ungkulan
-- Pencarian buku cepat dengan integrasi metadata global.
-- Sistem denda otomatis (Rp 2000/hari keterlambatan).
-- Dashboard analitik untuk Admin dan riwayat untuk Member.
-- Desain premium dengan micro-animations dan glassmorphism.
+## Fitur Unggulan
+
+- Cari buku super ngebut soalnya metadata-nya asik.
+- Ada denda otomatis! Bayar denda Rp 2.000/hari telat minjem (lumayan wkwk).
+- Dashboard admin ada analitiknya, jadi kelihatan pro gitu.
+- Desain webnya udah mantul ngab! Pake glassmorphism ala-ala app zaman now, micro-animations pokoknya biar yang mampir ke porto ga bosen liatnya.
 
 ---
-**Catatan Penting**: Mengikuti instruksi blueprint, sistem ini tidak menggunakan emoji sama sekali dalam seluruh antarmuka dan basis kode.
+**Catatan Penting dari gua**: Sumpah ya di project ini sengaja doang, murni sok serius dan elegan biar kesannya kaya *engineer* beneran wkwk.
