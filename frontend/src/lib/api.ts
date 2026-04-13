@@ -14,12 +14,13 @@ async function request(path: string, options: RequestInit = {}) {
     headers,
   });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
-  }
+  const json = await response.json();
 
-  return data;
+if (!response.ok || json.success === false) {
+  throw new Error(json.message || 'Request failed');
+}
+
+return json.data ?? json;
 }
 
 export const api = {

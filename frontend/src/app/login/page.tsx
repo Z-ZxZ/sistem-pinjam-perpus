@@ -36,10 +36,12 @@ export default function LoginPage() {
     
     try {
       const res = await api.post('/auth/login', { email, password });
-      const userData = res.data.user;
-      console.log('[Login] API Response User Role:', userData.role);
-      
-      authLogin(res.data.token, userData);
+
+      console.log('[Login] API Response:', res);
+
+      const userData = res.user;
+
+      authLogin(res.token, userData);
       // Handled by useEffect
     } catch (err: unknown) {
       if (err instanceof Error) {

@@ -49,7 +49,11 @@ export default function Dashboard() {
         api.get('/fines'),
       ]);
       setHistory(Array.isArray(historyRes?.data) ? historyRes.data : []);
-      setFines(finesRes?.data || { total: 0, fines: [] });
+      setFines(
+        finesRes?.data && typeof finesRes.data === 'object'
+          ? finesRes.data
+          : { total: 0, fines: [] }
+      );
     } catch (err) {
       console.error(err);
     } finally {
@@ -115,7 +119,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <div className="text-sm text-[#64748B] font-medium">Jatuh Tempo</div>
-                <div className="text-2xl font-bold text-[#1E293B]">{history.filter(h => h.status === 'overdue').length}</div>
+                <div className="text-2xl font-bold text-[#1E293B]">{(history || []).filter(h => h.status === 'overdue').length}</div>
               </div>
             </div>
           </motion.div>
@@ -189,7 +193,7 @@ export default function Dashboard() {
             </div>
             
             <div className="space-y-4">
-              {fines.fines.length === 0 ? (
+              {(fines?.fines || []).length === 0 ? (
                 <div className="card bg-[#14B8A6]/5 border-[#14B8A6]/20 text-center py-12 text-[#0D9488]">
                   Hebat! Anda tidak memiliki denda tertunggak.
                 </div>

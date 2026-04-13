@@ -3,6 +3,8 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/internal/domain"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/internal/middleware"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/internal/service"
 	"github.com/Z-ZxZ/sistem-pinjam-perpus/backend/pkg/response"
@@ -68,11 +70,18 @@ func (h *BorrowHandler) Return(w http.ResponseWriter, r *http.Request) {
 
 func (h *BorrowHandler) History(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(middleware.UserContextKey).(int64)
+
 	history, err := h.service.GetUserHistory(userID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	if history == nil {
+		response.Success(w, http.StatusOK, "history fetched", []interface{}{})
+		return
+	}
+
 	response.Success(w, http.StatusOK, "history fetched", history)
 }
 
@@ -87,11 +96,17 @@ func (h *BorrowHandler) AllBorrows(w http.ResponseWriter, r *http.Request) {
 
 func (h *BorrowHandler) Fines(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(middleware.UserContextKey).(int64)
+
 	fines, total, err := h.service.GetUserFines(userID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	if fines == nil {
+		fines = []*domain.Fine{}
+	}
+
 	response.Success(w, http.StatusOK, "fines fetched", map[string]interface{}{
 		"fines": fines,
 		"total": total,
