@@ -44,4 +44,4 @@ Halo bang! Ini project iseng gua bikin sistem perpustakaan modern. Sengaja dibik
 - Desain webnya udah mantul ngab! Pake glassmorphism ala-ala app zaman now, micro-animations pokoknya biar yang mampir ke porto ga bosen liatnya.
 
 ---
-**Catatan Penting dari gua**: Sumpah ya di project ini sengaja doang, murni sok serius dan elegan biar kesannya kaya *engineer* beneran wkwk.
+**Catatan Penting dari gua**: Sumpah ya di project ini iseng doang, murni sok serius dan elegan biar kesannya kaya *engineer* beneran wkwk.
