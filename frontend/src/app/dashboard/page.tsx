@@ -7,12 +7,6 @@ import { api } from '@/lib/api';
 import { Book, Clock, AlertCircle, BookOpen, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 interface Book {
   id: number;
   title: string;

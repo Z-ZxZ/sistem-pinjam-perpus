@@ -40,25 +40,31 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
-    try {
-      const [usersRes, borrowsRes, booksRes] = await Promise.all([
-        api.get('/admin/users'),
-        api.get('/admin/borrows'),
-        api.get('/books?limit=1'), // Just to get total
-      ]);
-      console.log('[Admin] Fetched users:', usersRes.data.length);
-      setUsers(usersRes?.data || []);
-      setBorrows(borrowsRes?.data || []);
-      setBooksCount(booksRes?.data?.total || 0);
-    } catch (err: unknown) {
-      console.error('[Admin] Fetch error:', err);
-      if (err instanceof Error) setError(err.message);
-      else setError('Gagal memuat data administrasi.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const fetchData = async () => {
+  try {
+    const [usersRes, borrowsRes, booksRes] = await Promise.all([
+      api.get('/admin/users'),
+      api.get('/admin/borrows'),
+      api.get('/books?limit=1'),
+    ]);
+
+    const usersData = Array.isArray(usersRes) ? usersRes : [];
+    const borrowsData = Array.isArray(borrowsRes) ? borrowsRes : [];
+
+    console.log('[Admin] Fetched users:', usersData.length);
+
+    setUsers(usersData);
+    setBorrows(borrowsData);
+    setBooksCount(booksRes?.total || 0);
+
+  } catch (err: unknown) {
+    console.error('[Admin] Fetch error:', err);
+    if (err instanceof Error) setError(err.message);
+    else setError('Gagal memuat data administrasi.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   useEffect(() => {
     if (isRestored) {

@@ -18,9 +18,6 @@ export const Navbar = () => {
     router.push('/login');
   };
 
-  // Prevent hydration mismatch by not rendering auth-dependent parts until restored
-  const showAuthItems = isRestored && isLoggedIn;
-
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0] z-50">
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">

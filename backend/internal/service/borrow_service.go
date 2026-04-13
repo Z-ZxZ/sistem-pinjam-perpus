@@ -30,7 +30,7 @@ func NewBorrowService(borrowRepo domain.BorrowRepository, bookRepo domain.BookRe
 }
 
 func (s *borrowService) BorrowBook(userID int64, bookID int64) error {
-	// Check if user has unpaid fines
+	// Cek dlu dia punya denda yg belom dibayar ga, jgn ngutang terus bos
 	totalUnpaid, err := s.fineRepo.GetTotalUnpaid(userID)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func (s *borrowService) BorrowBook(userID int64, bookID int64) error {
 		return errors.New("user has unpaid fines")
 	}
 
-	// Check if user has too many active borrows (limit 3)
+	// Cek pinjeman aktifnya kebanyakan ga (max 3 yak)
 	activeCount, err := s.borrowRepo.GetActiveBorrowCount(userID)
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (s *borrowService) BorrowBook(userID int64, bookID int64) error {
 		return errors.New("user has reached borrowing limit (3 books)")
 	}
 
-	// Check book stock
+	// Cek stok buku masih ada ga
 	book, err := s.bookRepo.GetByID(bookID)
 	if err != nil {
 		return err
@@ -57,12 +57,12 @@ func (s *borrowService) BorrowBook(userID int64, bookID int64) error {
 		return errors.New("book is out of stock")
 	}
 
-	// Create borrow
+	// Bikin record pinjeman nih
 	borrow := &domain.Borrow{
 		UserID:     userID,
 		BookID:     bookID,
 		BorrowDate: time.Now(),
-		DueDate:    time.Now().AddDate(0, 0, 7), // 7 days limit
+		DueDate:    time.Now().AddDate(0, 0, 7), // Jatah minjem 7 hari doang
 		Status:     domain.StatusBorrowed,
 	}
 
@@ -71,7 +71,7 @@ func (s *borrowService) BorrowBook(userID int64, bookID int64) error {
 		return err
 	}
 
-	// Update stock
+	// Kurangin stok buku lerrr
 	book.Stock--
 	return s.bookRepo.Update(book)
 }
@@ -90,11 +90,11 @@ func (s *borrowService) ReturnBook(borrowID int64) (float64, error) {
 	borrow.ReturnDate = &now
 	borrow.Status = domain.StatusReturned
 
-	// Calculate fine
+	// Itung denda nya nih
 	var fineAmount float64 = 0
 	if now.After(borrow.DueDate) {
 		daysLate := math.Ceil(now.Sub(borrow.DueDate).Hours() / 24)
-		fineAmount = daysLate * 2000 // 2000 per day
+		fineAmount = daysLate * 2000 // 2 rebu sehari gpp lah ya buat kas
 	}
 
 	err = s.borrowRepo.Update(borrow)
@@ -102,7 +102,7 @@ func (s *borrowService) ReturnBook(borrowID int64) (float64, error) {
 		return 0, err
 	}
 
-	// Create fine if exists
+	// Kalo ada denda kita masukin database langsung
 	if fineAmount > 0 {
 		fine := &domain.Fine{
 			BorrowID: borrow.ID,
@@ -116,7 +116,7 @@ func (s *borrowService) ReturnBook(borrowID int64) (float64, error) {
 		}
 	}
 
-	// Restore stock
+	// Balikin stok buku nya soalnya udah dibalikin
 	book, err := s.bookRepo.GetByID(borrow.BookID)
 	if err != nil {
 		return fineAmount, err

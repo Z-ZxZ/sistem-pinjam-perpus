@@ -20,7 +20,7 @@ type Fine struct {
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 
-	// Joined data
+	// Data hasil join bro
 	Borrow *Borrow `json:"borrow,omitempty"`
 }
 

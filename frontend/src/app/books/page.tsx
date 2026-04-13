@@ -19,7 +19,7 @@ interface Book {
 import { useAuth } from '@/context/AuthContext';
 
 export default function BookCatalog() {
-  const { isLoggedIn, token } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [books, setBooks] = useState<Book[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function BookCatalog() {
     try {
       await api.post('/borrow', { book_id: bookId });
       alert('Berhasil meminjam buku! Silakan cek dashboard Anda.');
-      fetchBooks(search); // Refresh stock
+      fetchBooks(search); // Biar stok nya ke refresh woi
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert(err.message);
@@ -109,7 +109,7 @@ export default function BookCatalog() {
                       alt={book.title} 
                       fill 
                       className="object-cover"
-                      unoptimized // Allow external URLs without config
+                      unoptimized // Biarin unoptimized aja deh biar ga ribet config external URL wkwk
                     />
                   )}
                   <div className="absolute top-2 right-2">

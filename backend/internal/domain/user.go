@@ -17,7 +17,7 @@ type User struct {
 	Email       string    `json:"email"`
 	Password    string    `json:"-"`
 	Role        UserRole  `json:"role"`
-	Status      string    `json:"status"` // active, inactive
+	Status      string    `json:"status"` // active atau inactive cuy
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }

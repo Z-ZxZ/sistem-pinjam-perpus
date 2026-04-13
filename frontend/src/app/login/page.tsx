@@ -42,7 +42,7 @@ export default function LoginPage() {
       const userData = res.user;
 
       authLogin(res.token, userData);
-      // Handled by useEffect
+      // Bakal di handle sama useEffect ntar
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

@@ -66,7 +66,7 @@ func (r *bookRepositoryPostgres) List(search string, category string, limit int,
 		whereSQL = " WHERE " + strings.Join(whereClauses, " AND ")
 	}
 
-	// Count total
+	// Ngitung total data cuy
 	countQuery := "SELECT COUNT(*) FROM books" + whereSQL
 	var total int64
 	err := r.db.QueryRow(countQuery, args...).Scan(&total)
@@ -74,7 +74,7 @@ func (r *bookRepositoryPostgres) List(search string, category string, limit int,
 		return nil, 0, err
 	}
 
-	// List
+	// List datanya nih
 	listQuery := fmt.Sprintf("SELECT id, title, author, publisher, year, category, isbn, stock, cover_url, created_at, updated_at FROM books%s LIMIT $%d OFFSET $%d", whereSQL, argCount, argCount+1)
 	args = append(args, limit, offset)
 

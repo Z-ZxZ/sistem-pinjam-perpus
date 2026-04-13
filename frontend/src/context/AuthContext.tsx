@@ -15,7 +15,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isAdmin: boolean;
   isLoading: boolean;
-  isRestored: boolean; // Flag to tell if we've checked localStorage
+  isRestored: boolean; // Flag penanda kalo kita udah kelar ngecek localStorage nih
   login: (token: string, user: User) => void;
   logout: () => void;
 }
@@ -38,6 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const parsedUser = JSON.parse(savedUser);
         console.log('[AuthContext] Hydrated user:', parsedUser.email, 'Role:', parsedUser.role);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setToken(savedToken);
         setUser(parsedUser);
       } catch (e) {

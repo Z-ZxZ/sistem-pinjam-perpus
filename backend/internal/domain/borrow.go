@@ -23,7 +23,7 @@ type Borrow struct {
 	CreatedAt  time.Time    `json:"created_at"`
 	UpdatedAt  time.Time    `json:"updated_at"`
 
-	// Joined data
+	// Data hasil join nih asik dah
 	User *User `json:"user,omitempty" gorm:"foreignKey:UserID"`
 	Book *Book `json:"book,omitempty" gorm:"foreignKey:BookID"`
 }
