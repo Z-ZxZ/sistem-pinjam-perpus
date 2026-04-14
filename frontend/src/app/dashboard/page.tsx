@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { api } from '@/lib/api';
 import { Book, Clock, AlertCircle, BookOpen, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 interface Book {
   id: number;
@@ -42,10 +43,10 @@ export default function Dashboard() {
         api.get('/history'),
         api.get('/fines'),
       ]);
-      setHistory(Array.isArray(historyRes?.data) ? historyRes.data : []);
+      setHistory(Array.isArray(historyRes) ? historyRes : []);
       setFines(
-        finesRes?.data && typeof finesRes.data === 'object'
-          ? finesRes.data
+        finesRes && typeof finesRes === 'object'
+          ? (finesRes as { total: number; fines: Fine[] })
           : { total: 0, fines: [] }
       );
     } catch (err) {
@@ -67,14 +68,14 @@ export default function Dashboard() {
 
   const handleReturn = async (borrowId: number) => {
     try {
-      await api.put('/borrow/return', { borrow_id: borrowId });
-      alert('Buku berhasil dikembalikan!');
+      await api.post('/return', { borrow_id: borrowId });
+      toast.success('Buku berhasil dikembalikan!');
       fetchData();
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        toast.error(err.message);
       } else {
-        alert('Gagal mengembalikan buku.');
+        toast.error('Gagal mengembalikan buku.');
       }
     }
   };

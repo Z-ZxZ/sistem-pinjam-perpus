@@ -6,6 +6,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/Button';
 import { api } from '@/lib/api';
 import { Search, Filter, Book as BookIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Book {
   id: number;
@@ -32,7 +33,7 @@ export default function BookCatalog() {
     setIsLoading(true);
     try {
       const res = await api.get(`/books?search=${val}&limit=20`);
-      setBooks(res.data.books);
+      setBooks(res.books || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -42,19 +43,19 @@ export default function BookCatalog() {
 
   const handleBorrow = async (bookId: number) => {
     if (!isLoggedIn) {
-      alert('Silakan login terlebih dahulu untuk meminjam buku.');
+      toast.error('Silakan login terlebih dahulu untuk meminjam buku.');
       return;
     }
 
     try {
       await api.post('/borrow', { book_id: bookId });
-      alert('Berhasil meminjam buku! Silakan cek dashboard Anda.');
+      toast.success('Berhasil meminjam buku! Silakan cek dashboard Anda.');
       fetchBooks(search); // Biar stok nya ke refresh woi
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        toast.error(err.message);
       } else {
-        alert('Gagal meminjam buku. Silakan coba lagi.');
+        toast.error('Gagal meminjam buku. Silakan coba lagi.');
       }
     }
   };
