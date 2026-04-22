@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "publisher": "Prentice Hall",
+    "year": 2008,
+    "category": "Programming",
+    "isbn": "9780132350884",
+    "stock": 10,
+    "cover_url": "https://images-na.ssl-images-amazon.com/images/I/41xShlnTZTL._SX376_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "The Pragmatic Programmer",
+    "author": "Andrew Hunt, David Thomas",
+    "publisher": "Addison-Wesley Professional",
+    "year": 1999,
+    "category": "Programming",
+    "isbn": "9780201616224",
+    "stock": 5,
+    "cover_url": "https://m.media-amazon.com/images/I/41as+4oByFL._SX442_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Design Patterns",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    "publisher": "Addison-Wesley Professional",
+    "year": 1994,
+    "category": "Software Engineering",
+    "isbn": "9780201633610",
+    "stock": 3,
+    "cover_url": "https://m.media-amazon.com/images/I/51szD9HC9pL._SX395_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Refactoring",
+    "author": "Martin Fowler",
+    "publisher": "Addison-Wesley Professional",
+    "year": 1999,
+    "category": "Software Engineering",
+    "isbn": "9780201485677",
+    "stock": 7,
+    "cover_url": "https://m.media-amazon.com/images/I/417S-G49T0L._SX379_BO1,204,203,200_.jpg"
+  },
+  {
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "author": "J.K. Rowling",
+    "publisher": "Scholastic",
+    "year": 1997,
+    "category": "Fantasy",
+    "isbn": "9780590353427",
+    "stock": 15,
+    "cover_url": "https://m.media-amazon.com/images/I/81m1s4wIPML._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "publisher": "Avery",
+    "year": 2018,
+    "category": "Self-Help",
+    "isbn": "9780735211292",
+    "stock": 12,
+    "cover_url": "https://m.media-amazon.com/images/I/91bYsX41hOL._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "publisher": "HarperOne",
+    "year": 1988,
+    "category": "Fiction",
+    "isbn": "9780062315007",
+    "stock": 20,
+    "cover_url": "https://m.media-amazon.com/images/I/71aFt4+OTOL._AC_UY327_FMwebp_QL65_.jpg"
+  }
+]

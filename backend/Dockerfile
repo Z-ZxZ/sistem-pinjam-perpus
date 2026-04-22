@@ -21,8 +21,9 @@ WORKDIR /app
 COPY --from=builder /app/server .
 COPY --from=builder /app/seeder .
 
-# Copy migrations
+# Copy migrations and data
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/data ./data
 
 EXPOSE 8080
 
