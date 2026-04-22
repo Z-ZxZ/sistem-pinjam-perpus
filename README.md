@@ -21,10 +21,12 @@ Halo bang! Ini project iseng gua bikin sistem perpustakaan modern. Sengaja dibik
    ```
 
 4. **Masukin Data Dummy (Seeding)**:
-   Ini penting nih, masukin dlu data dummy buat pamer ke temen/recruiter biar ga kosong banget websitenya:
+   Ini penting nih, masukin dlu data dummy buat pamer ke temen/recruiter biar ga kosong banget websitenya. Sekarang datanya udah asik, tinggal edit-edit aja file `backend/data/books.json` kalo mau ganti judul atau cover bukunya (udah support link gambar dari luar lho!).
+
+   Cara ngerun seeder-nya simpel banget:
 
    ```bash
-   docker exec -it perpus_backend go run cmd/seeder/main.go
+   docker exec -it perpus_backend ./seeder
    ```
 
 5. **Akses**:
