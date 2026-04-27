@@ -68,5 +68,65 @@
     "isbn": "9780062315007",
     "stock": 20,
     "cover_url": "https://m.media-amazon.com/images/I/71aFt4+OTOL._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "publisher": "Harper",
+    "year": 2011,
+    "category": "History",
+    "isbn": "9780062316097",
+    "stock": 8,
+    "cover_url": "https://m.media-amazon.com/images/I/713jIoMO3UL._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "The Lean Startup",
+    "author": "Eric Ries",
+    "publisher": "Crown Business",
+    "year": 2011,
+    "category": "Business",
+    "isbn": "9780307887894",
+    "stock": 6,
+    "cover_url": "https://m.media-amazon.com/images/I/81-QB7nDh4L._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "publisher": "Farrar, Straus and Giroux",
+    "year": 2011,
+    "category": "Psychology",
+    "isbn": "9780374275631",
+    "stock": 9,
+    "cover_url": "https://m.media-amazon.com/images/I/71m-MxdJ+PL._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "publisher": "Harper",
+    "year": 2016,
+    "category": "Self-Help",
+    "isbn": "9780062457714",
+    "stock": 14,
+    "cover_url": "https://m.media-amazon.com/images/I/71QKQ9mwV7L._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "publisher": "Scribner",
+    "year": 1925,
+    "category": "Classic",
+    "isbn": "9780743273565",
+    "stock": 18,
+    "cover_url": "https://m.media-amazon.com/images/I/81af+MCATTL._AC_UY327_FMwebp_QL65_.jpg"
+  },
+  {
+    "title": "Filosofi Teras: Filsafat Yunani-Romawi Kuno untuk Mental Tangguh Masa Kini",
+    "author": "Henry Manampiring",
+    "publisher": "Gramedia Pustaka Utama",
+    "year": 2019,
+    "category": "Philosophy",
+    "isbn": "9786024125189",
+    "stock": 10,
+    "cover_url": "https://m.media-amazon.com/images/I/51Zyl9n+qjL._AC_UY327_FMwebp_QL65_.jpg"
   }
 ]
